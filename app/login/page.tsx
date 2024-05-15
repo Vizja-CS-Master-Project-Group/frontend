@@ -1,16 +1,8 @@
 import Link from "next/link";
-import { getServerSession } from "next-auth";
 import LoginForm from "@/components/auth/LoginForm";
 import AuthLayout from "@/components/auth/AuthLayout";
-import { redirect } from "next/navigation";
 
 export default async function Page() {
-  const session = await getServerSession();
-
-  if (session) {
-    redirect("/forgot-password");
-  }
-
   return (
     <AuthLayout>
       <div className="grid gap-2 text-center">
