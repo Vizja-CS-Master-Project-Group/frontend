@@ -1,7 +1,7 @@
-import Image from "next/image";
 import type { ReactNode } from "react";
+import Image from "next/image";
 
-export default function AuthLayout({ children }: { children: ReactNode }) {
+export default function GuestLayout({ children }: { children: ReactNode }) {
   return (
     <div className="w-full lg:grid lg:grid-cols-2 h-screen">
       <div className="hidden bg-muted lg:block">

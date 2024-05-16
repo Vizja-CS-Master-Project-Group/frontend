@@ -6,8 +6,8 @@ const guestRoutes = ["/login", "/signup", "/forgot-password"];
 
 const routes: { [role: string]: string[] } = {
   guest: ["/login", "/signup", "/forgot-password"],
-  librarian: ["/"],
-  user: ["/"],
+  librarian: ["/", "/books"],
+  user: ["/", "/books"],
 };
 
 export function isAccessible(role: string, path: string) {
@@ -16,7 +16,6 @@ export function isAccessible(role: string, path: string) {
 
 export async function middleware(request: NextRequest) {
   const { pathname, search, origin, basePath } = request.nextUrl;
-  console.log("NEXT URL", request.nextUrl);
 
   // return NextResponse.next();
   const c = cookies();

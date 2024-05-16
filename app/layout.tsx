@@ -6,6 +6,8 @@ import { Providers } from "@/app/providers";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { cn } from "@/lib/utils";
+import AuthLayout from "@/containers/layouts/AuthLayout";
+import GuestLayout from "@/containers/layouts/GuestLayout";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -23,6 +25,7 @@ export default async function RootLayout({
   children: ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
+  const BaseLayout = session ? AuthLayout : GuestLayout;
 
   return (
     <html lang="en">
@@ -32,7 +35,9 @@ export default async function RootLayout({
           fontSans.variable,
         )}
       >
-        <Providers session={session}>{children}</Providers>
+        <Providers session={session}>
+          <BaseLayout>{children}</BaseLayout>
+        </Providers>
       </body>
     </html>
   );
