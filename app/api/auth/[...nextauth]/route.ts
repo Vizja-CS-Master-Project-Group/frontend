@@ -54,7 +54,7 @@ const authOptions: NextAuthOptions = {
           } else {
             console.log("HTTP error! Status:", response.status);
             // Handle non-successful response here, return an appropriate JSON response.
-            return { error: "Authentication failed" };
+            return null;
           }
         } catch (error) {
           console.log("Error", error);
