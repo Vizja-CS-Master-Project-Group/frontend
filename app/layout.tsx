@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/app/providers";
-import { authOptions } from "./api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { cn } from "@/lib/utils";
 import AuthLayout from "@/containers/layouts/AuthLayout";
@@ -24,7 +23,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession();
   const BaseLayout = session ? AuthLayout : GuestLayout;
 
   return (
