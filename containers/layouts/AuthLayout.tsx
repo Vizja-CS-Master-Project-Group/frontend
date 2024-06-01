@@ -1,26 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import {
-  Bell,
-  CircleUser,
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Bell, CircleUser, Home, Menu, Package2, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,15 +15,23 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navigation from "@/components/navigation/navigation";
 import NavigationItem from "@/components/navigation/navigation-item";
 import ActiveEvent from "@/containers/events/active-event";
+import { Session } from "next-auth";
+import { authNavigation } from "@/lib/navigation";
+import { headers } from "next/headers";
+import { cn } from "@/lib/utils";
 
-export default function AuthLayout({
+export default async function AuthLayout({
   title,
   children,
+  session,
 }: {
   title?: string;
   children: ReactNode;
+  session: Session;
 }) {
-  const a = Home;
+  const navigation = authNavigation(session.user.role);
+  const headersList = headers();
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -59,12 +48,15 @@ export default function AuthLayout({
           </div>
           <div className="flex-1">
             <Navigation>
-              <NavigationItem
-                href={"/"}
-                label={"Dashboard"}
-                icon={Home}
-                active
-              />
+              {navigation.map((nav, i) => (
+                <NavigationItem
+                  key={`nav-${i}`}
+                  label={nav.label}
+                  href={nav.href}
+                  icon={Home}
+                  active
+                />
+              ))}
             </Navigation>
           </div>
           <div className="mt-auto p-4">
@@ -104,20 +96,7 @@ export default function AuthLayout({
                   href={"/"}
                   label={"Dashboard"}
                   icon={Home}
-                  mobile
-                  active
-                />
-                <NavigationItem
-                  href={"/"}
-                  label={"Dashboard"}
-                  icon={Home}
                   badge={2}
-                  mobile
-                />
-                <NavigationItem
-                  href={"/"}
-                  label={"Dashboard"}
-                  icon={Home}
                   mobile
                 />
               </Navigation>
@@ -155,9 +134,9 @@ export default function AuthLayout({
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <main className="flex flex-1">
           {title && (
-            <div className="flex items-center">
+            <div className="flex items-center gap-4 p-4 lg:gap-6 lg:p-6">
               <h1 className="text-lg font-semibold md:text-2xl">{title}</h1>
             </div>
           )}

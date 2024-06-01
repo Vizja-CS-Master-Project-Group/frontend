@@ -11,7 +11,7 @@ export default function Navigation({
   return (
     <nav
       className={cn("grid font-medium", {
-        "items-start px-2 text-sm lg:px-4": !mobile,
+        "items-start px-2 text-sm lg:px-4 gap-y-2": !mobile,
         "gap-2 text-lg": mobile,
       })}
     >

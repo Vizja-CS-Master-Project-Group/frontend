@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 
-const guestRoutes = ["/login", "/signup", "/forgot-password"];
-
 const routes: { [role: string]: string[] } = {
   guest: ["/login", "/signup", "/forgot-password"],
   librarian: ["/", "/books"],
@@ -12,6 +10,25 @@ const routes: { [role: string]: string[] } = {
 
 export function isAccessible(role: string, path: string) {
   return routes[role].includes(path);
+}
+
+function redirectToNext(request: NextRequest) {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", request.nextUrl.pathname);
+
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+}
+
+function redirectToLogin(request: NextRequest) {
+  if (request.nextUrl.pathname === "/login") {
+    return redirectToNext(request);
+  }
+
+  return NextResponse.redirect(new URL("/login", request.url));
 }
 
 export async function middleware(request: NextRequest) {
@@ -31,10 +48,10 @@ export async function middleware(request: NextRequest) {
    */
   if (!c.get("next-auth.session-token")?.value?.trim()) {
     if (isAccessible("guest", pathname)) {
-      return NextResponse.next();
+      return redirectToNext(request);
     }
 
-    return NextResponse.redirect(new URL("/login", request.url));
+    return redirectToLogin(request);
   }
 
   const headers = {
@@ -50,13 +67,13 @@ export async function middleware(request: NextRequest) {
   if (response.ok) {
     const session = await response.json();
     if (isAccessible(session.user.role, pathname)) {
-      return NextResponse.next();
+      return redirectToNext(request);
     }
 
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  return NextResponse.redirect(new URL("/login", request.url));
+  return redirectToLogin(request);
 }
 
 // See "Matching Paths" below to learn more
