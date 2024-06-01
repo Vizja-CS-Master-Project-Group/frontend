@@ -8,7 +8,8 @@ export default async function Page({
   searchParams: { page?: number };
 }) {
   return (
-    <div className="w-full p-4">
+    <div className={"w-full p-4 lg:p-6"}>
+      <h1 className="text-lg font-semibold md:text-2xl mb-2">Books</h1>
       <TableResource
         page={searchParams?.page ?? 1}
         columns={[
