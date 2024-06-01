@@ -1,6 +1,14 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { Bell, CircleUser, Home, Menu, Package2, Search } from "lucide-react";
+import {
+  Bell,
+  CircleUser,
+  Home,
+  LibraryBig,
+  Menu,
+  Package2,
+  Search,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,13 +20,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import Navigation from "@/components/navigation/navigation";
-import NavigationItem from "@/components/navigation/navigation-item";
 import ActiveEvent from "@/containers/events/active-event";
 import { Session } from "next-auth";
-import { authNavigation } from "@/lib/navigation";
-import { headers } from "next/headers";
-import { cn } from "@/lib/utils";
+import AuthNavigation from "@/containers/auth-navigation";
 
 export default async function AuthLayout({
   title,
@@ -29,16 +33,13 @@ export default async function AuthLayout({
   children: ReactNode;
   session: Session;
 }) {
-  const navigation = authNavigation(session.user.role);
-  const headersList = headers();
-
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
-              <Package2 className="h-6 w-6" />
+              <LibraryBig className="h-6 w-6" />
               <span className="">The Library</span>
             </Link>
             <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
@@ -47,17 +48,7 @@ export default async function AuthLayout({
             </Button>
           </div>
           <div className="flex-1">
-            <Navigation>
-              {navigation.map((nav, i) => (
-                <NavigationItem
-                  key={`nav-${i}`}
-                  label={nav.label}
-                  href={nav.href}
-                  icon={Home}
-                  active
-                />
-              ))}
-            </Navigation>
+            <AuthNavigation session={session} />
           </div>
           <div className="mt-auto p-4">
             <ActiveEvent />
@@ -78,28 +69,15 @@ export default async function AuthLayout({
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
-              <Navigation mobile>
+              <AuthNavigation session={session} mobile>
                 <Link
                   href="#"
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
-                  <Package2 className="h-6 w-6" />
+                  <LibraryBig className="h-6 w-6" />
                   <span className="sr-only">The Library</span>
                 </Link>
-                <NavigationItem
-                  href={"/"}
-                  label={"Dashboard"}
-                  icon={Home}
-                  mobile
-                />
-                <NavigationItem
-                  href={"/"}
-                  label={"Dashboard"}
-                  icon={Home}
-                  badge={2}
-                  mobile
-                />
-              </Navigation>
+              </AuthNavigation>
               <div className="mt-auto">
                 <ActiveEvent mobile />
               </div>
