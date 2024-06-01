@@ -1,35 +1,18 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import {
-  Bell,
-  CircleUser,
-  Home,
-  LibraryBig,
-  Menu,
-  Package2,
-  Search,
-} from "lucide-react";
+import { Bell, LibraryBig, Menu, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import ActiveEvent from "@/containers/events/active-event";
 import { Session } from "next-auth";
-import AuthNavigation from "@/containers/auth-navigation";
+import AuthNavigation from "@/containers/navs/auth-navigation";
+import AuthDropdown from "@/containers/navs/auth-dropdown";
 
 export default async function AuthLayout({
-  title,
   children,
   session,
 }: {
-  title?: string;
   children: ReactNode;
   session: Session;
 }) {
@@ -95,31 +78,9 @@ export default async function AuthLayout({
               </div>
             </form>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <AuthDropdown />
         </header>
-        <main className="flex flex-1">
-          {title && (
-            <div className="flex items-center gap-4 p-4 lg:gap-6 lg:p-6">
-              <h1 className="text-lg font-semibold md:text-2xl">{title}</h1>
-            </div>
-          )}
-          {children}
-        </main>
+        <main className="flex flex-1">{children}</main>
       </div>
     </div>
   );
