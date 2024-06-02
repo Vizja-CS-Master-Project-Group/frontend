@@ -2,7 +2,7 @@ import Image from "next/image";
 import { BookType } from "@/types/book";
 import Link from "next/link";
 
-export default function ({ id, name, cover, language }: BookType) {
+export default function BookItem({ id, name, cover, language }: BookType) {
   return (
     <Link
       href={`/books/${id}`}
