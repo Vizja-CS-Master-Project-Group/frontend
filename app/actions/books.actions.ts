@@ -3,7 +3,7 @@
 import { CreateBookFromSchema } from "@/containers/forms/book/book-create-form";
 import getSession from "@/lib/getSession";
 import { ResourceActionProps } from "@/containers/resource/table-resource";
-import { ViewResourceInterface } from "@/types/misc";
+import { ViewInterface, ViewResourceInterface } from "@/types/misc";
 import { BookInterface } from "@/types/book";
 import { post } from "@/lib/api";
 
@@ -24,8 +24,10 @@ export async function bookList(
   return await response.json();
 }
 
-export async function bookCreate(value: CreateBookFromSchema) {
-  return post("books", value);
+export async function bookCreate(
+  value: CreateBookFromSchema,
+): Promise<BookInterface> {
+  return post<ViewInterface<BookInterface>>("books", value).then((v) => v.data);
 }
 
 export async function bookEdit() {

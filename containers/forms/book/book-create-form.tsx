@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { bookCreate } from "@/app/actions/books.actions";
-import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -47,7 +47,6 @@ export default function BookCreateForm({
   authors: KeyValueObject;
   publishers: KeyValueObject;
 }) {
-  const session = useSession();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -57,10 +56,13 @@ export default function BookCreateForm({
     },
   });
 
-  // 2. Define a submit handler.
-  console.log(session);
-  function onSubmit(values: CreateBookFromSchema) {
-    return bookCreate(values);
+  async function onSubmit(values: CreateBookFromSchema) {
+    try {
+      const book = await bookCreate(values);
+      redirect(`/books/${book.id}`);
+    } catch (error) {
+      console.log("error", error);
+    }
   }
 
   return (

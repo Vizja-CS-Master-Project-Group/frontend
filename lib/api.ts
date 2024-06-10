@@ -19,7 +19,7 @@ export async function post<T>(path: string, body: any): Promise<T> {
     },
   });
 
-  if (response.ok) {
+  if (!response.ok) {
     throw new Error("Failed when sending post request");
   }
 
