@@ -1,6 +1,8 @@
 import TableResource from "@/containers/resource/table-resource";
 import * as React from "react";
 import { bookList } from "@/app/actions/books.actions";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default async function Page({
   searchParams,
@@ -10,6 +12,7 @@ export default async function Page({
   return (
     <div className={"w-full p-4 lg:p-6"}>
       <h1 className="text-lg font-semibold md:text-2xl mb-2">Books</h1>
+      <Link href={"books/create"}>Create</Link>
       <TableResource
         page={searchParams?.page ?? 1}
         columns={[

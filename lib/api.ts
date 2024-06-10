@@ -6,7 +6,7 @@ export async function post<T>(path: string, body: any): Promise<T> {
   const session = await getSession();
 
   if (!session) {
-    redirect("/login");
+    // redirect("/login");
   }
 
   const response = await fetch(`${process.env.BACKEND_API}/api/${path}`, {
