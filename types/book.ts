@@ -1,3 +1,5 @@
+import { Author } from "@/types/author";
+
 export interface BookInterface {
   id: number;
   name: string;
@@ -9,9 +11,3 @@ export interface BookInterface {
   cover: string;
   author: Author;
 }
-
-export type Author = {
-  id: number;
-  name: string;
-  lastname: string;
-};
