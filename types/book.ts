@@ -1,4 +1,4 @@
-export type BookType = {
+export interface BookInterface {
   id: number;
   name: string;
   language: string;
@@ -8,7 +8,7 @@ export type BookType = {
   allow_loan: boolean;
   cover: string;
   author: Author;
-};
+}
 
 export type Author = {
   id: number;

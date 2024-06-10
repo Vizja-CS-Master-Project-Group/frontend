@@ -1,6 +1,6 @@
 import TableResource from "@/containers/resource/table-resource";
-import { booksApi } from "@/lib/api";
 import * as React from "react";
+import { bookList } from "@/app/actions/books.actions";
 
 export default async function Page({
   searchParams,
@@ -31,7 +31,7 @@ export default async function Page({
             cellClassName: "w-40 text-center",
           },
         ]}
-        resourceAction={booksApi}
+        resourceAction={bookList}
       />
     </div>
   );

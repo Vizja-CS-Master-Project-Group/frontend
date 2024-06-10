@@ -1,5 +1,8 @@
-export interface ViewResourceInterface<T> {
-  data: T[];
+export interface ViewInterface<T> {
+  data: T;
+}
+
+export interface ViewResourceInterface<T> extends ViewInterface<T[]> {
   links: {
     first: string | null;
     last: string | null;

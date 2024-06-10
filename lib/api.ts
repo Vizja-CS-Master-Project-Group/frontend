@@ -1,39 +1,27 @@
-import { ViewResourceInterface } from "@/types/misc";
-import { BookType } from "@/types/book";
-import { ResourceActionProps } from "@/containers/resource/table-resource";
+"use server";
+import getSession from "@/lib/getSession";
+import { redirect } from "next/navigation";
 
-export function login(email?: string, password?: string, headers?: Headers) {
-  return fetch(`${process.env.BACKEND_API}/login`, {
-    method: "POST",
-    headers: headers,
-    body: JSON.stringify({
-      email,
-      password,
-    }),
-  });
-}
+export async function post<T>(path: string, body: any): Promise<T> {
+  const session = await getSession();
 
-export function csrfCookie() {
-  return fetch(`${process.env.BACKEND_API}/sanctum/csrf-cookie`, {
-    method: "GET",
-  });
-}
-
-export async function booksApi(
-  props: ResourceActionProps,
-): Promise<ViewResourceInterface<BookType>> {
-  const response = await fetch(
-    `${process.env.BACKEND_API}/api/books?page=${props.page}`,
-    {
-      method: "GET",
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to get books");
+  if (!session) {
+    redirect("/login");
   }
 
-  return await response.json();
-}
+  const response = await fetch(`${process.env.BACKEND_API}/api/${path}`, {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.user?.access_token}`,
+    },
+  });
 
-export function backendApi() {}
+  if (response.ok) {
+    throw new Error("Failed when sending post request");
+  }
+
+  return response.json();
+}

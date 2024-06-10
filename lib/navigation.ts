@@ -19,11 +19,24 @@ const navigation: { user: NavigationType[]; librarian: NavigationType[] } = {
     {
       label: "Books",
       href: "/books",
-      isActive: (path) => path === "/books",
+      isActive: (path) => path.startsWith("/books"),
       icon: Book,
     },
   ],
-  librarian: [],
+  librarian: [
+    {
+      label: "Dashboard",
+      href: "/",
+      isActive: (path) => path === "/",
+      icon: Home,
+    },
+    {
+      label: "Books",
+      href: "/books",
+      isActive: (path) => path.startsWith("/books"),
+      icon: Book,
+    },
+  ],
 };
 
 export function authNavigation(role: UserRole): NavigationType[] {

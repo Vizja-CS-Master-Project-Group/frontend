@@ -65,19 +65,6 @@ const LoginForm = () => {
       .finally(() => setLoading(false));
   };
 
-  // useEffect(() => {
-  //   if (setToast) {
-  //     const timer = setTimeout(() => {
-  //       setToast(false);
-  //       setErr(false);
-  //     }, 5000);
-  //
-  //     return () => {
-  //       clearTimeout(timer);
-  //     };
-  //   }
-  // }, [toast]);
-
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="grid gap-4">
       <div className="grid gap-2">
