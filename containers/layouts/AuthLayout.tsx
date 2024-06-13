@@ -78,7 +78,7 @@ export default async function AuthLayout({
               </div>
             </form>
           </div>
-          <AuthDropdown />
+          <AuthDropdown session={session} />
         </header>
         <main className="flex flex-1">{children}</main>
       </div>

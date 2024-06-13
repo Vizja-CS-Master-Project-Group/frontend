@@ -1,7 +1,6 @@
 "use server";
 
 import { CreateBookFromSchema } from "@/containers/forms/book/book-create-form";
-import getSession from "@/lib/getSession";
 import { ResourceActionProps } from "@/containers/resource/table-resource";
 import { ViewInterface, ViewResourceInterface } from "@/types/misc";
 import { BookInterface } from "@/types/book";

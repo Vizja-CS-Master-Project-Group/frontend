@@ -3,16 +3,29 @@ import * as React from "react";
 import { bookList } from "@/app/actions/books.actions";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import getSession from "@/lib/getSession";
 
 export default async function Page({
   searchParams,
 }: {
   searchParams: { page?: number };
 }) {
+  const session = await getSession();
+
   return (
     <div className={"w-full p-4 lg:p-6"}>
-      <h1 className="text-lg font-semibold md:text-2xl mb-2">Books</h1>
-      <Link href={"books/create"}>Create</Link>
+      <div className={"flex justify-between mb-2"}>
+        <h1 className="text-lg font-semibold md:text-2xl">Books</h1>
+        {session && session.user.role === "librarian" && (
+          <Button variant={"default"} size={"sm"} asChild>
+            <Link href="/books/create">
+              <Plus className="mr-1 h-4 w-4" />
+              Create
+            </Link>
+          </Button>
+        )}
+      </div>
       <TableResource
         page={searchParams?.page ?? 1}
         columns={[
