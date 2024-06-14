@@ -89,39 +89,44 @@ export default async function TableResource<T = object>({
           ))}
         </TableBody>
       </Table>
-      <Pagination className={"mt-6"}>
-        <PaginationContent>
-          {resource.meta.links.map((link, i) => {
-            if (!link.url) {
-              return null;
-            }
+      {resource.meta.links.length > 3 && (
+        <Pagination className={"mt-6"}>
+          <PaginationContent>
+            {resource.meta.links.map((link, i) => {
+              if (!link.url) {
+                return null;
+              }
 
-            if (link.label.includes("Previous")) {
+              if (link.label.includes("Previous")) {
+                return (
+                  <PaginationItem key={`page-${i}`}>
+                    <PaginationPrevious
+                      href={link.url}
+                      isActive={link.active}
+                    />
+                  </PaginationItem>
+                );
+              }
+
+              if (link.label.includes("Next") && link.url) {
+                return (
+                  <PaginationItem key={`page-${i}`}>
+                    <PaginationNext href={link.url} isActive={link.active} />
+                  </PaginationItem>
+                );
+              }
+
               return (
                 <PaginationItem key={`page-${i}`}>
-                  <PaginationPrevious href={link.url} isActive={link.active} />
+                  <PaginationLink href={link.url} isActive={link.active}>
+                    {link.label}
+                  </PaginationLink>
                 </PaginationItem>
               );
-            }
-
-            if (link.label.includes("Next") && link.url) {
-              return (
-                <PaginationItem key={`page-${i}`}>
-                  <PaginationNext href={link.url} isActive={link.active} />
-                </PaginationItem>
-              );
-            }
-
-            return (
-              <PaginationItem key={`page-${i}`}>
-                <PaginationLink href={link.url} isActive={link.active}>
-                  {link.label}
-                </PaginationLink>
-              </PaginationItem>
-            );
-          })}
-        </PaginationContent>
-      </Pagination>
+            })}
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 }
