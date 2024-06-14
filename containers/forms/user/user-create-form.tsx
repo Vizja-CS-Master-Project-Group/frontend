@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,43 +21,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { bookCreate } from "@/app/actions/books.actions";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { userCreate } from "@/app/actions/user.actions";
+import { UserInterface } from "@/types/user";
 
 const formSchema = z.object({
   name: z.string().min(1, {
     message: "Name must be at least 1 character.",
   }),
-  subject: z.string(),
-  language: z.string(),
-  page_count: z.string(),
-  author_id: z.string(),
-  publisher_id: z.string(),
+  lastname: z.string(),
+  email: z.string(),
+  role: z.string(),
 });
 
-type KeyValueObject = { [key: string]: string };
+export type CreateUserFromSchema = z.infer<typeof formSchema>;
 
-export type CreateBookFromSchema = z.infer<typeof formSchema>;
-
-export default function BookCreateForm({
-  authors,
-  publishers,
-}: {
-  authors: KeyValueObject;
-  publishers: KeyValueObject;
-}) {
+export default function UserCreateForm({ roles }: { roles: string[] }) {
   const router = useRouter();
-  const form = useForm<CreateBookFromSchema>({
+  const form = useForm<CreateUserFromSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      subject: "",
-      language: "",
-    },
   });
 
-  async function onSubmit(values: CreateBookFromSchema) {
-    return bookCreate(values).then((book) => router.push(`/books/${book.id}`));
+  async function onSubmit(values: CreateUserFromSchema) {
+    return userCreate(values).then((user: UserInterface) =>
+      router.push(`/users/${user.id}`),
+    );
   }
 
   return (
@@ -72,7 +59,7 @@ export default function BookCreateForm({
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Book Name"
+                  placeholder="Name"
                   {...field}
                   disabled={
                     form.formState.isLoading || form.formState.isSubmitting
@@ -85,35 +72,32 @@ export default function BookCreateForm({
         />
         <FormField
           control={form.control}
-          name="subject"
+          name="lastname"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Subject</FormLabel>
+              <FormLabel>Lastname</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Book Subject"
+                  placeholder="Lastname"
                   {...field}
                   disabled={
                     form.formState.isLoading || form.formState.isSubmitting
                   }
                 />
               </FormControl>
-              <FormDescription>
-                Please write something about the subject of the book.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name="language"
+          name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Book Language</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Book Language"
+                  placeholder="Email"
                   {...field}
                   disabled={
                     form.formState.isLoading || form.formState.isSubmitting
@@ -126,30 +110,10 @@ export default function BookCreateForm({
         />
         <FormField
           control={form.control}
-          name="page_count"
+          name="role"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Page Count</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Page Count"
-                  type={"number"}
-                  {...field}
-                  disabled={
-                    form.formState.isLoading || form.formState.isSubmitting
-                  }
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="author_id"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Author</FormLabel>
+              <FormLabel>Role</FormLabel>
               <FormControl>
                 <Select
                   {...field}
@@ -165,48 +129,12 @@ export default function BookCreateForm({
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select author" />
+                    <SelectValue placeholder="Select role" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.keys(authors).map((id) => (
-                      <SelectItem key={id} value={id}>
-                        {authors[id]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="publisher_id"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Publisher</FormLabel>
-              <FormControl>
-                <Select
-                  {...field}
-                  disabled={
-                    form.formState.isLoading || form.formState.isSubmitting
-                  }
-                  onValueChange={(value) =>
-                    field.onChange({
-                      target: {
-                        value,
-                      },
-                    })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select publisher" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(publishers).map((id: string) => (
-                      <SelectItem key={id} value={id}>
-                        {publishers[id]}
+                    {roles.map((role) => (
+                      <SelectItem key={role} value={role}>
+                        {role}
                       </SelectItem>
                     ))}
                   </SelectContent>

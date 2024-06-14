@@ -8,3 +8,7 @@ export interface UserInterface {
   email: string;
   role: UserRole;
 }
+
+export interface UserSchemaInterface {
+  roles: UserRole[];
+}

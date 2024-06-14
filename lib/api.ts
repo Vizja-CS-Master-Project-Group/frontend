@@ -19,7 +19,7 @@ export async function get<T>(path: string): Promise<T> {
   });
 
   if (!response.ok) {
-    throw new Error("Failed when sending post request");
+    throw new Error("Failed when sending get request");
   }
 
   return response.json();
