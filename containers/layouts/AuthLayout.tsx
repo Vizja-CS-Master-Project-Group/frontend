@@ -33,9 +33,9 @@ export default async function AuthLayout({
           <div className="flex-1">
             <AuthNavigation session={session} />
           </div>
-          <div className="mt-auto p-4">
-            <ActiveEvent />
-          </div>
+          {/*<div className="mt-auto p-4">*/}
+          {/*  <ActiveEvent />*/}
+          {/*</div>*/}
         </div>
       </div>
       <div className="flex flex-col">
@@ -61,9 +61,9 @@ export default async function AuthLayout({
                   <span className="sr-only">The Library</span>
                 </Link>
               </AuthNavigation>
-              <div className="mt-auto">
-                <ActiveEvent mobile />
-              </div>
+              {/*<div className="mt-auto">*/}
+              {/*  <ActiveEvent mobile />*/}
+              {/*</div>*/}
             </SheetContent>
           </Sheet>
           <div className="w-full flex-1">
