@@ -1,4 +1,5 @@
 import { Author } from "@/types/author";
+import { CreateBookFromSchema } from "@/containers/forms/book/book-edit-form";
 
 export interface BookInterface {
   id: number;
@@ -13,6 +14,16 @@ export interface BookInterface {
 }
 
 export interface BookCreateSchemaInterface {
-  authors: { [key: string]: string };
-  publishers: { [key: string]: string };
+  schema: {
+    authors: { [key: string]: string };
+    publishers: { [key: string]: string };
+  };
+}
+
+export interface BookEditSchemaInterface {
+  data: CreateBookFromSchema;
+  schema: {
+    authors: { [key: string]: string };
+    publishers: { [key: string]: string };
+  };
 }

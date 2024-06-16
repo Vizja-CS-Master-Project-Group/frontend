@@ -71,3 +71,27 @@ export async function deleteRequest<T>(path: string): Promise<T> {
 
   return response.json();
 }
+
+export async function put<T>(path: string, body: any): Promise<T> {
+  const session = await getSession();
+
+  if (!session) {
+    redirect("/login");
+  }
+
+  const response = await fetch(`${process.env.BACKEND_API}/api/${path}`, {
+    method: "PUT",
+    body: JSON.stringify(body),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${session?.user?.access_token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed when sending PUT request");
+  }
+
+  return response.json();
+}

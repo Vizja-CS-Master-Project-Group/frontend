@@ -7,8 +7,12 @@ import {
   ViewInterface,
   ViewResourceInterface,
 } from "@/types/misc";
-import { BookCreateSchemaInterface, BookInterface } from "@/types/book";
-import { deleteRequest, get, post } from "@/lib/api";
+import {
+  BookCreateSchemaInterface,
+  BookEditSchemaInterface,
+  BookInterface,
+} from "@/types/book";
+import { deleteRequest, get, post, put } from "@/lib/api";
 
 export async function bookShow(
   id: number,
@@ -32,12 +36,14 @@ export async function bookCreateSchema() {
   return get<BookCreateSchemaInterface>("books/create");
 }
 
-export async function bookEdit() {
-  return null;
+export async function bookEdit(id: number, value: CreateBookFromSchema) {
+  return put<ViewInterface<BookInterface>>(`books/${id}`, value).then(
+    (r) => r.data,
+  );
 }
 
-export async function bookEditSchema() {
-  return null;
+export async function bookEditSchema(id: number) {
+  return get<BookEditSchemaInterface>(`books/${id}/edit`);
 }
 
 export async function bookDelete(book: BookInterface) {
