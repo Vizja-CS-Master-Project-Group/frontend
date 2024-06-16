@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import TableResource from "@/containers/resource/table-resource";
 import * as React from "react";
-import { userList } from "@/app/actions/user.actions";
+import { userDelete, userList } from "@/app/actions/user.actions";
 
 export default function Page({
   searchParams,
@@ -42,6 +42,7 @@ export default function Page({
           },
         ]}
         resourceAction={userList}
+        resourceDeleteAction={userDelete}
       />
     </div>
   );

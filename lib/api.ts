@@ -49,7 +49,7 @@ export async function post<T>(path: string, body: any): Promise<T> {
   return response.json();
 }
 
-export async function deleteRequest<T>(path: string, body: any): Promise<T> {
+export async function deleteRequest<T>(path: string): Promise<T> {
   const session = await getSession();
 
   if (!session) {
@@ -57,8 +57,7 @@ export async function deleteRequest<T>(path: string, body: any): Promise<T> {
   }
 
   const response = await fetch(`${process.env.BACKEND_API}/api/${path}`, {
-    method: "POST",
-    body: JSON.stringify(body),
+    method: "DELETE",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -67,7 +66,7 @@ export async function deleteRequest<T>(path: string, body: any): Promise<T> {
   });
 
   if (!response.ok) {
-    throw new Error("Failed when sending post request");
+    throw new Error("Failed when sending delete request");
   }
 
   return response.json();

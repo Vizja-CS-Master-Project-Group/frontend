@@ -13,7 +13,7 @@ export interface ViewResourceInterface<T> extends ViewInterface<T[]> {
     current_page: number;
     from: number;
     last_page: number;
-    links: ViewResourceLinkType[];
+    links: ViewResourceLinkInterface[];
     path: string;
     per_page: number;
     to: number;
@@ -21,7 +21,13 @@ export interface ViewResourceInterface<T> extends ViewInterface<T[]> {
   };
 }
 
-export type ViewResourceLinkType = {
+export interface DeleteResponseInterface {
+  data: {
+    message: string;
+  };
+}
+
+export type ViewResourceLinkInterface = {
   url: string | null;
   label: string;
   active: boolean;

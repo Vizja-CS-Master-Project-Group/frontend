@@ -1,9 +1,9 @@
 import BookCreateForm from "@/containers/forms/book/book-create-form";
 import * as React from "react";
-import { bookSchema } from "@/app/actions/books.actions";
+import { bookCreateSchema } from "@/app/actions/books.actions";
 
 export default async function page() {
-  const schema = await bookSchema();
+  const schema = await bookCreateSchema();
 
   return (
     <div className={"w-full p-4 lg:p-6"}>

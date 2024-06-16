@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
+import { DeleteResponseInterface } from "@/types/misc";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+const format = require("string-format");
 import { Pencil, Trash2 } from "lucide-react";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -13,23 +15,19 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import Link from "next/link";
-import { DeleteResponseInterface } from "@/types/misc";
-import { redirect } from "next/navigation";
-const format = require("string-format");
-interface TableResourceActionProps<T> {
+
+interface ViewResourceActionsProps<T extends object> {
   data: T;
   resourceEditPath?: string;
-  resourceDeleteAction?: (data: T) => Promise<DeleteResponseInterface>;
+  resourceDeleteAction?: (d: T) => Promise<DeleteResponseInterface>;
 }
 
-export default function TableResourceAction<T = object>({
+export default function ViewResourceActions<T extends object = object>({
   data,
   resourceEditPath,
   resourceDeleteAction,
-}: TableResourceActionProps<T>) {
+}: ViewResourceActionsProps<T>) {
   const [loading, setLoading] = React.useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
 
@@ -47,26 +45,28 @@ export default function TableResourceAction<T = object>({
 
     setLoading(false);
     setOpenDeleteDialog(false);
-    redirect("/");
+    location.reload();
   };
 
   return (
-    <div className={"flex space-x-2 justify-between items-center"}>
+    <div className={"flex items-center gap-x-2"}>
       {resourceEditPath && (
-        <Button variant="outline" size="icon-sm" asChild>
+        <Button variant="outline" size="sm" asChild>
           <Link href={format(resourceEditPath, data)}>
-            <Pencil className="h-4 w-4" />
+            <Pencil className="h-4 w-4 mr-2" />
+            Edit
           </Link>
         </Button>
       )}
       {resourceDeleteAction && (
         <>
           <Button
-            variant="outline"
-            size="icon-sm"
+            size="sm"
+            variant="destructive"
             onClick={() => setOpenDeleteDialog(true)}
           >
-            <Trash2 className="h-4 w-4" />
+            <Trash2 className="h-4 w-4 mr-2" />
+            Delete
           </Button>
           <AlertDialog
             open={openDeleteDialog}

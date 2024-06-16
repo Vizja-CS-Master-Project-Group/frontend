@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ViewResourceInterface } from "@/types/misc";
+import { DeleteResponseInterface, ViewResourceInterface } from "@/types/misc";
 import {
   Pagination,
   PaginationContent,
@@ -38,7 +38,7 @@ interface TableResourceProps<T = object> {
     props: ResourceActionProps,
   ) => Promise<ViewResourceInterface<T>>;
   resourceEditPath?: string;
-  resourceDeleteAction: (d: T) => Promise<any>;
+  resourceDeleteAction?: (d: T) => Promise<DeleteResponseInterface>;
 }
 
 export default async function TableResource<T = object>({

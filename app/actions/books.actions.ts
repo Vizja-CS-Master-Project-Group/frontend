@@ -2,9 +2,13 @@
 
 import { CreateBookFromSchema } from "@/containers/forms/book/book-create-form";
 import { ResourceActionProps } from "@/containers/resource/table-resource";
-import { ViewInterface, ViewResourceInterface } from "@/types/misc";
-import { BookInterface } from "@/types/book";
-import { get, post } from "@/lib/api";
+import {
+  DeleteResponseInterface,
+  ViewInterface,
+  ViewResourceInterface,
+} from "@/types/misc";
+import { BookCreateSchemaInterface, BookInterface } from "@/types/book";
+import { deleteRequest, get, post } from "@/lib/api";
 
 export async function bookShow(
   id: number,
@@ -24,12 +28,20 @@ export async function bookCreate(
   return post<ViewInterface<BookInterface>>("books", value).then((v) => v.data);
 }
 
+export async function bookCreateSchema() {
+  return get<BookCreateSchemaInterface>("books/create");
+}
+
 export async function bookEdit() {
   return null;
 }
 
-export async function bookDelete(book: BookInterface) {
+export async function bookEditSchema() {
   return null;
+}
+
+export async function bookDelete(book: BookInterface) {
+  return deleteRequest<DeleteResponseInterface>(`books/${book.id}`);
 }
 
 export async function bookSchema() {

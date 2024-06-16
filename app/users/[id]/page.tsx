@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { userShow } from "@/app/actions/user.actions";
+import { userDelete, userList, userShow } from "@/app/actions/user.actions";
 import ViewResource from "@/containers/resource/view-resource";
 import * as React from "react";
 
@@ -18,8 +18,8 @@ export default async function page({
 
   return (
     <div className={"w-full p-4 lg:p-6"}>
-      <h1 className="text-lg font-semibold md:text-2xl mb-2">User #{id}</h1>
       <ViewResource
+        title={`User ${id}`}
         resourceAction={async () => userShow(id)}
         rows={[
           {
@@ -43,6 +43,7 @@ export default async function page({
             accessorKey: "registered_at",
           },
         ]}
+        resourceDeleteAction={userDelete}
       />
     </div>
   );

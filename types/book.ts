@@ -11,3 +11,8 @@ export interface BookInterface {
   cover: string;
   author: Author;
 }
+
+export interface BookCreateSchemaInterface {
+  authors: { [key: string]: string };
+  publishers: { [key: string]: string };
+}
