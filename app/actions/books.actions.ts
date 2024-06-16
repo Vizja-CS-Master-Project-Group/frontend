@@ -22,7 +22,7 @@ export async function bookEdit() {
   return null;
 }
 
-export async function bookDelete() {
+export async function bookDelete(book: BookInterface) {
   return null;
 }
 

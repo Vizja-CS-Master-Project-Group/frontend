@@ -1,9 +1,9 @@
 import TableResource from "@/containers/resource/table-resource";
 import * as React from "react";
-import { bookList } from "@/app/actions/books.actions";
+import { bookDelete, bookList } from "@/app/actions/books.actions";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { MoreHorizontal, Plus } from "lucide-react";
 import getSession from "@/lib/getSession";
 
 export default async function Page({
@@ -32,6 +32,11 @@ export default async function Page({
           {
             header: "Name",
             accessorKey: "name",
+            cell: (row) => (
+              <Link href={`/books/${row.id}`} className={"text-primary"}>
+                {row.name}
+              </Link>
+            ),
           },
           {
             header: "Author",
@@ -48,6 +53,8 @@ export default async function Page({
           },
         ]}
         resourceAction={bookList}
+        resourceEditPath={"/books/{id}/edit"}
+        resourceDeleteAction={bookDelete}
       />
     </div>
   );

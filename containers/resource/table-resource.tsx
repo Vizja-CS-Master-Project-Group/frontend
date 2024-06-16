@@ -17,6 +17,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { TableAction } from "@/components/table/table-actions";
+import TableResourceAction from "@/containers/resource/table-resource-action";
+const format = require("string-format");
 
 interface Column<T = object> {
   header: string;
@@ -30,18 +33,24 @@ export interface ResourceActionProps {
   page: number;
 }
 
-interface TableResourceProps<T> {
+interface TableResourceProps<T = object> {
   page: number;
   columns: Column<T>[];
   resourceAction: (
     props: ResourceActionProps,
   ) => Promise<ViewResourceInterface<T>>;
+  actions?: TableAction<T>[];
+  resourceEditPath?: string;
+  resourceDeleteAction: (d: T) => Promise<any>;
 }
 
 export default async function TableResource<T = object>({
   page = 1,
   columns,
   resourceAction,
+  resourceEditPath,
+  resourceDeleteAction,
+  actions = [],
 }: TableResourceProps<T>) {
   const resource = await resourceAction({
     page,
@@ -52,10 +61,13 @@ export default async function TableResource<T = object>({
       return column.cell(data);
     }
 
-    // @ts-ignore
-    if (!column.cell && column.accessorKey in data) {
-      // @ts-ignore
-      return data[column.accessorKey];
+    if (
+      !column.cell &&
+      data &&
+      typeof data === "object" &&
+      column.accessorKey in data
+    ) {
+      return format(`{${column.accessorKey}}`, data);
     }
 
     return "-";
@@ -72,6 +84,7 @@ export default async function TableResource<T = object>({
                 {column.header}
               </TableHead>
             ))}
+            <TableHead className={"hover:bg-slate-50"}></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -85,6 +98,16 @@ export default async function TableResource<T = object>({
                   {renderCell(column, data)}
                 </TableCell>
               ))}
+              <TableCell
+                key={`table-row-${i}-action-column`}
+                className={"w-20"}
+              >
+                <TableResourceAction
+                  data={data}
+                  resourceEditPath={resourceEditPath}
+                  resourceDeleteAction={resourceDeleteAction}
+                />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
