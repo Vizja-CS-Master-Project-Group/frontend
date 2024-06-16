@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import Link from "next/link";
 import { Bell, LibraryBig, Menu, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";

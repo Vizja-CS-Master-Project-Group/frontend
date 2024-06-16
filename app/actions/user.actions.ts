@@ -4,6 +4,10 @@ import { ViewInterface, ViewResourceInterface } from "@/types/misc";
 import { UserInterface, UserSchemaInterface } from "@/types/user";
 import { CreateUserFromSchema } from "@/containers/forms/user/user-create-form";
 
+export async function userShow(id: number) {
+  return get<ViewInterface<UserInterface>>(`users/${id}`);
+}
+
 export async function userList(
   props: ResourceActionProps,
 ): Promise<ViewResourceInterface<UserInterface>> {

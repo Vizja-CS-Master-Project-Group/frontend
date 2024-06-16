@@ -25,6 +25,10 @@ export default function Page({
         page={searchParams?.page ?? 1}
         columns={[
           {
+            header: "ID",
+            accessorKey: "id",
+          },
+          {
             header: "Name",
             accessorKey: "name",
           },

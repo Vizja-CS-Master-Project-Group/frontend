@@ -7,6 +7,7 @@ export interface UserInterface {
   full_name: string;
   email: string;
   role: UserRole;
+  registered_at: string;
 }
 
 export interface UserSchemaInterface {
