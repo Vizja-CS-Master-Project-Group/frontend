@@ -1,20 +1,21 @@
 "use server";
 
 import React from "react";
-import { ViewInterface } from "@/types/misc";
+import { NestedKeyOf, ViewInterface } from "@/types/misc";
+const format = require("string-format");
 
-interface Row<T = object> {
+interface Row<T extends object = object> {
   label: string;
-  accessorKey: keyof T;
+  accessorKey: NestedKeyOf<T>;
   view?: (data: T) => React.ReactNode;
 }
 
-interface ViewResourceProps<T> {
+interface ViewResourceProps<T extends object> {
   rows: Row<T>[];
   resourceAction: () => Promise<ViewInterface<T>>;
 }
 
-export default async function ViewResource<T = object>({
+export default async function ViewResource<T extends object = object>({
   rows,
   resourceAction,
 }: ViewResourceProps<T>) {
@@ -42,7 +43,7 @@ export default async function ViewResource<T = object>({
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               {row.view
                 ? row.view(resource)
-                : String(resource[row.accessorKey])}
+                : format(`{${row.accessorKey}}`, resource)}
             </dd>
           </div>
         ))}

@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -17,7 +16,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { TableAction } from "@/components/table/table-actions";
 import TableResourceAction from "@/containers/resource/table-resource-action";
 const format = require("string-format");
 
@@ -39,7 +37,6 @@ interface TableResourceProps<T = object> {
   resourceAction: (
     props: ResourceActionProps,
   ) => Promise<ViewResourceInterface<T>>;
-  actions?: TableAction<T>[];
   resourceEditPath?: string;
   resourceDeleteAction: (d: T) => Promise<any>;
 }
@@ -50,7 +47,6 @@ export default async function TableResource<T = object>({
   resourceAction,
   resourceEditPath,
   resourceDeleteAction,
-  actions = [],
 }: TableResourceProps<T>) {
   const resource = await resourceAction({
     page,

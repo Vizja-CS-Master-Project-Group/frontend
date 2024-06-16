@@ -6,6 +6,12 @@ import { ViewInterface, ViewResourceInterface } from "@/types/misc";
 import { BookInterface } from "@/types/book";
 import { get, post } from "@/lib/api";
 
+export async function bookShow(
+  id: number,
+): Promise<ViewInterface<BookInterface>> {
+  return get(`books/${id}`);
+}
+
 export async function bookList(
   props: ResourceActionProps,
 ): Promise<ViewResourceInterface<BookInterface>> {
