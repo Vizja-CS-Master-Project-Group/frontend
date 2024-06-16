@@ -35,6 +35,10 @@ export default async function page({
             accessorKey: "author.name",
           },
           {
+            label: "Page",
+            accessorKey: "page_count",
+          },
+          {
             label: "Subject",
             accessorKey: "subject",
           },
