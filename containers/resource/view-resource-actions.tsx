@@ -19,12 +19,14 @@ import {
 
 interface ViewResourceActionsProps<T extends object> {
   data: T;
+  resourceEditName?: string;
   resourceEditPath?: string;
   resourceDeleteAction?: (d: T) => Promise<DeleteResponseInterface>;
 }
 
 export default function ViewResourceActions<T extends object = object>({
   data,
+  resourceEditName = "Edit",
   resourceEditPath,
   resourceDeleteAction,
 }: ViewResourceActionsProps<T>) {
@@ -54,7 +56,7 @@ export default function ViewResourceActions<T extends object = object>({
         <Button variant="outline" size="sm" asChild>
           <Link href={format(resourceEditPath, data)}>
             <Pencil className="h-4 w-4 mr-2" />
-            Edit
+            {resourceEditName}
           </Link>
         </Button>
       )}

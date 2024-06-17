@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import getSession from "@/lib/getSession";
 import { loanList } from "@/app/actions/loan.actions";
+import { formatMoney } from "@/lib/utils";
 
 export default async function Page({
   searchParams,
@@ -33,7 +34,7 @@ export default async function Page({
             header: "ID",
             accessorKey: "id",
             cell: (row) => (
-              <Link href={`/books/${row.id}`} className={"text-primary"}>
+              <Link href={`/loans/${row.id}`} className={"text-primary"}>
                 #{row.id}
               </Link>
             ),
@@ -41,8 +42,9 @@ export default async function Page({
           {
             header: "User",
             accessorKey: "user.name",
+            isAccessible: session?.user?.role === "librarian",
             cell: (row) => (
-              <Link href={`/user/${row.user.id}`} className={"text-primary"}>
+              <Link href={`/users/${row.user.id}`} className={"text-primary"}>
                 {row.user.full_name}
               </Link>
             ),
@@ -66,16 +68,14 @@ export default async function Page({
           },
           {
             header: "Total Fee",
-            accessorKey: "total_fee",
+            accessorKey: "fee",
+            cell: (row) => formatMoney(row.fee ?? 0),
           },
         ]}
         resourceAction={loanList}
         resourceEditPath={
           session?.user.role !== "user" ? "/loans/{id}/finalize" : undefined
         }
-        // resourceDeleteAction={
-        //   session?.user.role !== "user" ? bookDelete : undefined
-        // }
       />
     </div>
   );

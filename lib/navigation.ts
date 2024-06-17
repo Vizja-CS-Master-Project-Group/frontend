@@ -1,5 +1,5 @@
 import { UserRole } from "@/types/user";
-import { Book, Home, Users } from "lucide-react";
+import { Book, Home, Users, FileOutput } from "lucide-react";
 
 export type NavigationType = {
   label: string;
@@ -26,7 +26,7 @@ const navigation: { user: NavigationType[]; librarian: NavigationType[] } = {
       label: "Loans",
       href: "/loans",
       isActive: (path) => path.startsWith("/loans"),
-      icon: Book,
+      icon: FileOutput,
     },
   ],
   librarian: [
@@ -47,6 +47,12 @@ const navigation: { user: NavigationType[]; librarian: NavigationType[] } = {
       href: "/users",
       isActive: (path) => path.startsWith("/users"),
       icon: Users,
+    },
+    {
+      label: "Loans",
+      href: "/loans",
+      isActive: (path) => path.startsWith("/loans"),
+      icon: FileOutput,
     },
   ],
 };

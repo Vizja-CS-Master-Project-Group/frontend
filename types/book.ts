@@ -3,6 +3,7 @@ import { CreateBookFromSchema } from "@/containers/forms/book/book-edit-form";
 
 export interface BookInterface {
   id: number;
+  isbn: string;
   name: string;
   language: string;
   subject: string;

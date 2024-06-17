@@ -20,6 +20,7 @@ interface ViewResourceProps<T extends object> {
   title: string;
   rows: Row<T>[];
   resourceAction: () => Promise<ViewInterface<T>>;
+  resourceEditName?: string;
   resourceEditPath?: string;
   resourceDeleteAction?: (d: T) => Promise<DeleteResponseInterface>;
 }
@@ -28,6 +29,7 @@ export default async function ViewResource<T extends object = object>({
   title,
   rows,
   resourceAction,
+  resourceEditName,
   resourceEditPath,
   resourceDeleteAction,
 }: ViewResourceProps<T>) {
@@ -42,12 +44,26 @@ export default async function ViewResource<T extends object = object>({
     return null;
   }
 
+  function renderView(row: Row<T>, data: T) {
+    if (row.view) {
+      return row.view(data);
+    }
+
+    const viewData = format(`{${row.accessorKey}}`, data);
+    if (viewData === "null") {
+      return "-";
+    }
+
+    return viewData ?? "-";
+  }
+
   return (
     <>
       <div className={"flex justify-between items-center w-full mb-2"}>
         <h1 className="text-lg font-semibold md:text-2xl">{title}</h1>
         <ViewResourceActions
           data={resource}
+          resourceEditName={resourceEditName}
           resourceEditPath={resourceEditPath}
           resourceDeleteAction={resourceDeleteAction}
         />
@@ -61,15 +77,13 @@ export default async function ViewResource<T extends object = object>({
           {rows.map((row) => (
             <div
               key={row.label}
-              className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
+              className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 even:bg-slate-50"
             >
               <dt className="text-sm font-medium leading-6 text-gray-900">
                 {row.label}
               </dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {row.view
-                  ? row.view(resource)
-                  : format(`{${row.accessorKey}}`, resource)}
+                {renderView(row, resource)}
               </dd>
             </div>
           ))}

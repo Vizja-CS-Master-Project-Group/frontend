@@ -1,7 +1,7 @@
 export type UserRole = "librarian" | "user";
 
 export interface UserInterface {
-  id: string;
+  id: number;
   name: string;
   lastname: string;
   full_name: string;

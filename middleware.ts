@@ -14,7 +14,7 @@ const routes: { [role: string]: string[] } = {
     "/users/[id]/edit",
     "/loans",
     "/loans/[id]",
-    "/loans/[id]/edit",
+    "/loans/[id]/return",
   ],
   user: ["/", "/books", "/books/[id]", "/loans", "/loans/[id]"],
 };

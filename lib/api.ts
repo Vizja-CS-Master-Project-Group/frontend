@@ -1,6 +1,7 @@
 "use server";
 import getSession from "@/lib/getSession";
 import { redirect } from "next/navigation";
+import { DeleteResponseInterface } from "@/types/misc";
 
 export async function get<T>(path: string): Promise<T> {
   const session = await getSession();
@@ -18,11 +19,7 @@ export async function get<T>(path: string): Promise<T> {
     },
   });
 
-  if (!response.ok) {
-    throw new Error("Failed when sending get request");
-  }
-
-  return response.json();
+  return handleResponse(response, "Failed when sending GET request");
 }
 
 export async function post<T>(path: string, body: any): Promise<T> {
@@ -42,11 +39,7 @@ export async function post<T>(path: string, body: any): Promise<T> {
     },
   });
 
-  if (!response.ok) {
-    throw new Error("Failed when sending post request");
-  }
-
-  return response.json();
+  return handleResponse(response, "Failed when sending POST request");
 }
 
 export async function deleteRequest<T>(path: string): Promise<T> {
@@ -65,11 +58,7 @@ export async function deleteRequest<T>(path: string): Promise<T> {
     },
   });
 
-  if (!response.ok) {
-    throw new Error("Failed when sending delete request");
-  }
-
-  return response.json();
+  return handleResponse(response, "Failed when sending DELETE request");
 }
 
 export async function put<T>(path: string, body: any): Promise<T> {
@@ -89,9 +78,35 @@ export async function put<T>(path: string, body: any): Promise<T> {
     },
   });
 
-  if (!response.ok) {
-    throw new Error("Failed when sending PUT request");
+  return handleResponse(response, "Failed when sending PUT request");
+}
+
+async function handleResponse<T>(
+  response: Response,
+  error: string,
+): Promise<T> {
+  if (response.ok) {
+    return handleJson(response);
   }
 
-  return response.json();
+  try {
+    return handleJson(response);
+  } catch (e) {
+    console.log("CORTLADIK MI??");
+    return Promise.reject({
+      data: {
+        variant: "error",
+        error,
+      },
+    });
+  }
+}
+
+async function handleJson<T>(response: Response): Promise<T> {
+  const json = await response.json();
+  if (json?.data && json?.data?.variant === "error") {
+    return Promise.reject(json);
+  }
+
+  return json;
 }

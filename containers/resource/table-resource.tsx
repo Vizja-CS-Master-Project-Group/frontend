@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -24,12 +23,13 @@ import {
 import TableResourceAction from "@/containers/resource/table-resource-action";
 const format = require("string-format");
 
-interface Column<T extends object = object> {
+export interface Column<T extends object = object> {
   header: string;
   headerClassName?: string;
   accessorKey: NestedKeyOf<T>;
   cell?: (data: T) => React.ReactNode;
   cellClassName?: string;
+  isAccessible?: boolean;
 }
 
 export interface ResourceActionProps {
@@ -70,7 +70,15 @@ export default async function TableResource<T extends object = object>({
       typeof data === "object" &&
       column.accessorKey in data
     ) {
-      return format(`{${column.accessorKey}}`, data);
+      const cellData = format(`{${column.accessorKey}}`, data) ?? "-";
+      /**
+       * Related to the formatter issue
+       */
+      if (cellData === "null") {
+        return "-";
+      }
+
+      return cellData;
     }
 
     return "-";
@@ -82,11 +90,16 @@ export default async function TableResource<T extends object = object>({
         {/*<TableCaption>A list of your recent invoices.</TableCaption>*/}
         <TableHeader className={"bg-slate-50"}>
           <TableRow className={"hover:bg-slate-50"}>
-            {columns.map((column, i) => (
-              <TableHead key={`header-${i}`} className={column.headerClassName}>
-                {column.header}
-              </TableHead>
-            ))}
+            {columns
+              .filter((c) => c.isAccessible || c.isAccessible === undefined)
+              .map((column, i) => (
+                <TableHead
+                  key={`header-${i}`}
+                  className={column.headerClassName}
+                >
+                  {column.header}
+                </TableHead>
+              ))}
             {(resourceEditPath || resourceDeleteAction) && (
               <TableHead className={"hover:bg-slate-50"}></TableHead>
             )}
@@ -95,14 +108,16 @@ export default async function TableResource<T extends object = object>({
         <TableBody>
           {resource.data.map((data, i) => (
             <TableRow key={`table-row-${i}`}>
-              {columns.map((column, ii) => (
-                <TableCell
-                  key={`table-row-${i}-column-${ii}`}
-                  className={column.cellClassName}
-                >
-                  {renderCell(column, data)}
-                </TableCell>
-              ))}
+              {columns
+                .filter((c) => c.isAccessible || c.isAccessible === undefined)
+                .map((column, ii) => (
+                  <TableCell
+                    key={`table-row-${i}-column-${ii}`}
+                    className={column.cellClassName}
+                  >
+                    {renderCell(column, data)}
+                  </TableCell>
+                ))}
               {(resourceEditPath || resourceDeleteAction) && (
                 <TableCell
                   key={`table-row-${i}-action-column`}
