@@ -27,6 +27,11 @@ export default function Page({
           {
             header: "ID",
             accessorKey: "id",
+            cell: (row) => (
+              <Link href={`/users/${row.id}`} className={"text-primary"}>
+                {row.id}
+              </Link>
+            ),
           },
           {
             header: "Name",

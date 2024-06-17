@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import dayjs from "dayjs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -24,4 +25,8 @@ export function formatNumber(number: number | bigint) {
     new Intl.NumberFormat().resolvedOptions().locale,
   );
   return formatter.format(number);
+}
+
+export function formatDatetime(datetime: string) {
+  return dayjs(datetime).format("DD.MM.YYYY hh:mm:ss");
 }

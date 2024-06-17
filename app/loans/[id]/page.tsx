@@ -2,7 +2,7 @@ import React from "react";
 import { redirect } from "next/navigation";
 import ViewResource from "@/containers/resource/view-resource";
 import { loanShow } from "@/app/actions/loan.actions";
-import { formatMoney } from "@/lib/utils";
+import { formatDatetime, formatMoney } from "@/lib/utils";
 
 export default async function page({
   params: { id },
@@ -43,10 +43,13 @@ export default async function page({
           {
             label: "Barrow At",
             accessorKey: "barrow_at",
+            view: (data) => formatDatetime(data.returned_at),
           },
           {
             label: "Returned At",
             accessorKey: "returned_at",
+            view: (data) =>
+              data.returned_at ? formatDatetime(data.returned_at) : "-",
           },
           {
             label: "Paid Fee",

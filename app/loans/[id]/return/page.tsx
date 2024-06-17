@@ -1,7 +1,7 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import { loanFinalizeSchema } from "@/app/actions/loan.actions";
-import { formatMoney, formatNumber } from "@/lib/utils";
+import { formatDatetime, formatMoney, formatNumber } from "@/lib/utils";
 import LoanFinalizeForm from "@/containers/forms/loans/loan-finalize-form";
 
 export default async function page({
@@ -47,7 +47,7 @@ export default async function page({
               Book Name
             </dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              {loan.data.book.name}
+              {formatDatetime(loan.data.book.name)}
             </dd>
           </div>
         </dl>
@@ -57,7 +57,7 @@ export default async function page({
               Barrow At
             </dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              {loan.data.barrow_at}
+              {loan.data.barrow_at ? formatDatetime(loan.data.barrow_at) : "-"}
             </dd>
           </div>
         </dl>

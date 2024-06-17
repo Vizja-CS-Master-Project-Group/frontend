@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import getSession from "@/lib/getSession";
 import { loanList } from "@/app/actions/loan.actions";
-import { formatMoney } from "@/lib/utils";
+import { formatDatetime, formatMoney } from "@/lib/utils";
 
 export default async function Page({
   searchParams,
@@ -35,7 +35,7 @@ export default async function Page({
             accessorKey: "id",
             cell: (row) => (
               <Link href={`/loans/${row.id}`} className={"text-primary"}>
-                #{row.id}
+                {row.id}
               </Link>
             ),
           },
@@ -61,10 +61,13 @@ export default async function Page({
           {
             header: "Barrow At",
             accessorKey: "barrow_at",
+            cell: (row) => formatDatetime(row.barrow_at),
           },
           {
             header: "Returned At",
             accessorKey: "returned_at",
+            cell: (row) =>
+              row.returned_at ? formatDatetime(row.returned_at) : "-",
           },
           {
             header: "Total Fee",

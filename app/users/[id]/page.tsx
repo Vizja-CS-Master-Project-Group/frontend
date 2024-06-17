@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { userDelete, userList, userShow } from "@/app/actions/user.actions";
 import ViewResource from "@/containers/resource/view-resource";
 import * as React from "react";
+import { formatDatetime } from "@/lib/utils";
 
 export default async function page({
   params: { id },
@@ -41,6 +42,7 @@ export default async function page({
           {
             label: "Registered At",
             accessorKey: "registered_at",
+            view: (data) => formatDatetime(data.registered_at),
           },
         ]}
         resourceDeleteAction={userDelete}
