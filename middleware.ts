@@ -15,6 +15,7 @@ const routes: { [role: string]: string[] } = {
     "/loans",
     "/loans/[id]",
     "/loans/[id]/return",
+    "/settings",
   ],
   user: ["/", "/books", "/books/[id]", "/loans", "/loans/[id]"],
 };
