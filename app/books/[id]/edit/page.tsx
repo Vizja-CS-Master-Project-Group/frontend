@@ -3,7 +3,7 @@ import { bookEditSchema } from "@/app/actions/books.actions";
 import BookEditForm from "@/containers/forms/book/book-edit-form";
 import { redirect } from "next/navigation";
 
-export default async function ({
+export default async function page({
   params: { id },
 }: {
   params: { id: number | string };
