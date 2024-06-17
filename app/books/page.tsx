@@ -41,7 +41,7 @@ export default async function Page({
           {
             header: "Author",
             headerClassName: "w-56 text-center",
-            accessorKey: "writer",
+            accessorKey: "author.name",
             cellClassName: "w-56 text-center",
             cell: (row) => `${row.author.name} ${row.author.lastname}`,
           },
