@@ -3,7 +3,7 @@ import * as React from "react";
 import { bookDelete, bookList } from "@/app/actions/books.actions";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import getSession from "@/lib/getSession";
 
 export default async function Page({
@@ -53,8 +53,12 @@ export default async function Page({
           },
         ]}
         resourceAction={bookList}
-        resourceEditPath={"/books/{id}/edit"}
-        resourceDeleteAction={bookDelete}
+        resourceEditPath={
+          session?.user.role !== "user" ? "/books/{id}/edit" : undefined
+        }
+        resourceDeleteAction={
+          session?.user.role !== "user" ? bookDelete : undefined
+        }
       />
     </div>
   );
