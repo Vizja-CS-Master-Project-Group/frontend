@@ -21,7 +21,7 @@ export interface ViewResourceInterface<T> extends ViewInterface<T[]> {
   };
 }
 
-export interface DeleteResponseInterface<T> {
+export interface DeleteResponseInterface {
   data: {
     variant: "success" | "error";
     message: string;
