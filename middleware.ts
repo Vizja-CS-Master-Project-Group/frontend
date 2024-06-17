@@ -4,13 +4,28 @@ import { cookies } from "next/headers";
 
 const routes: { [role: string]: string[] } = {
   guest: ["/login", "/signup", "/forgot-password"],
-  librarian: ["/", "/books"],
-  user: ["/", "/books"],
+  librarian: [
+    "/",
+    "/books",
+    "/books/[id]",
+    "/books/[id]/edit",
+    "/users",
+    "/users/[id]",
+    "/users/[id]/edit",
+    "/loans",
+    "/loans/[id]",
+    "/loans/[id]/edit",
+  ],
+  user: ["/", "/books", "/books/[id]", "/loans", "/loans/[id]"],
 };
 
 export function isAccessible(role: string, path: string) {
-  return true; // TODO
-  return routes[role].includes(path);
+  const accessibleRoutes = routes[role] || [];
+  return accessibleRoutes.some((route) => {
+    const regexPattern = route.replace(/\[.*?\]/g, "[^/]+").replace("/", "\\/");
+    const regex = new RegExp(`^${regexPattern}$`);
+    return regex.test(path);
+  });
 }
 
 function redirectToNext(request: NextRequest) {
