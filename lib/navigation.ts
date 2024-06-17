@@ -22,6 +22,12 @@ const navigation: { user: NavigationType[]; librarian: NavigationType[] } = {
       isActive: (path) => path.startsWith("/books"),
       icon: Book,
     },
+    {
+      label: "Loans",
+      href: "/loans",
+      isActive: (path) => path.startsWith("/loans"),
+      icon: Book,
+    },
   ],
   librarian: [
     {

@@ -2,12 +2,17 @@ import * as React from "react";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DeleteResponseInterface, ViewResourceInterface } from "@/types/misc";
+import {
+  DeleteResponseInterface,
+  NestedKeyOf,
+  ViewResourceInterface,
+} from "@/types/misc";
 import {
   Pagination,
   PaginationContent,
@@ -19,10 +24,10 @@ import {
 import TableResourceAction from "@/containers/resource/table-resource-action";
 const format = require("string-format");
 
-interface Column<T = object> {
+interface Column<T extends object = object> {
   header: string;
   headerClassName?: string;
-  accessorKey: string;
+  accessorKey: NestedKeyOf<T>;
   cell?: (data: T) => React.ReactNode;
   cellClassName?: string;
 }
@@ -31,7 +36,7 @@ export interface ResourceActionProps {
   page: number;
 }
 
-interface TableResourceProps<T = object> {
+interface TableResourceProps<T extends object = object> {
   page: number;
   columns: Column<T>[];
   resourceAction: (
@@ -39,14 +44,16 @@ interface TableResourceProps<T = object> {
   ) => Promise<ViewResourceInterface<T>>;
   resourceEditPath?: string;
   resourceDeleteAction?: (d: T) => Promise<DeleteResponseInterface>;
+  debug?: boolean;
 }
 
-export default async function TableResource<T = object>({
+export default async function TableResource<T extends object = object>({
   page = 1,
   columns,
   resourceAction,
   resourceEditPath,
   resourceDeleteAction,
+  debug = false,
 }: TableResourceProps<T>) {
   const resource = await resourceAction({
     page,
@@ -80,7 +87,9 @@ export default async function TableResource<T = object>({
                 {column.header}
               </TableHead>
             ))}
-            <TableHead className={"hover:bg-slate-50"}></TableHead>
+            {(resourceEditPath || resourceDeleteAction) && (
+              <TableHead className={"hover:bg-slate-50"}></TableHead>
+            )}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -94,18 +103,27 @@ export default async function TableResource<T = object>({
                   {renderCell(column, data)}
                 </TableCell>
               ))}
-              <TableCell
-                key={`table-row-${i}-action-column`}
-                className={"w-20"}
-              >
-                <TableResourceAction
-                  data={data}
-                  resourceEditPath={resourceEditPath}
-                  resourceDeleteAction={resourceDeleteAction}
-                />
-              </TableCell>
+              {(resourceEditPath || resourceDeleteAction) && (
+                <TableCell
+                  key={`table-row-${i}-action-column`}
+                  className={"w-20 py-0 px-4"}
+                >
+                  <TableResourceAction
+                    data={data}
+                    resourceEditPath={resourceEditPath}
+                    resourceDeleteAction={resourceDeleteAction}
+                  />
+                </TableCell>
+              )}
             </TableRow>
           ))}
+          {resource.data.length === 0 && (
+            <TableRow>
+              <TableCell className={"p-4 text-center"}>
+                No Record Found!
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
       {resource.meta.links.length > 3 && (
