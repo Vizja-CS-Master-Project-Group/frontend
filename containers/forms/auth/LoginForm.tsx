@@ -9,8 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { Badge } from "../ui/badge";
 import React from "react";
+import { Badge } from "@/components/ui/badge";
 
 type TRegisterForm = {
   email: string;

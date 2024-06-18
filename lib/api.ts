@@ -92,7 +92,6 @@ async function handleResponse<T>(
   try {
     return handleJson(response);
   } catch (e) {
-    console.log("CORTLADIK MI??");
     return Promise.reject({
       data: {
         variant: "error",
