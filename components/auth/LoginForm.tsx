@@ -57,7 +57,7 @@ const LoginForm = () => {
     // TODO: redirect will be handle it by next-auth
     return signIn("credentials", {
       redirect: true,
-      callbackUrl: "/",
+      callbackUrl: "/books",
       ...data,
     })
       .then(onLogin)

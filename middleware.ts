@@ -5,7 +5,6 @@ import { cookies } from "next/headers";
 const routes: { [role: string]: string[] } = {
   guest: ["/login", "/signup", "/forgot-password"],
   librarian: [
-    "/",
     "/books",
     "/books/[id]",
     "/books/[id]/edit",
@@ -17,7 +16,7 @@ const routes: { [role: string]: string[] } = {
     "/loans/[id]/return",
     "/settings",
   ],
-  user: ["/", "/books", "/books/[id]", "/loans", "/loans/[id]"],
+  user: ["/books", "/books/[id]", "/loans", "/loans/[id]"],
 };
 
 export function isAccessible(role: string, path: string) {
@@ -87,7 +86,7 @@ export async function middleware(request: NextRequest) {
       return redirectToNext(request);
     }
 
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/books", request.url));
   }
 
   return redirectToLogin(request);

@@ -11,12 +11,6 @@ export type NavigationType = {
 const navigation: { user: NavigationType[]; librarian: NavigationType[] } = {
   user: [
     {
-      label: "Dashboard",
-      href: "/",
-      isActive: (path) => path === "/",
-      icon: Home,
-    },
-    {
       label: "Books",
       href: "/books",
       isActive: (path) => path.startsWith("/books"),
@@ -30,12 +24,6 @@ const navigation: { user: NavigationType[]; librarian: NavigationType[] } = {
     },
   ],
   librarian: [
-    {
-      label: "Dashboard",
-      href: "/",
-      isActive: (path) => path === "/",
-      icon: Home,
-    },
     {
       label: "Books",
       href: "/books",
