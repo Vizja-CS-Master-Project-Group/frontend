@@ -12,10 +12,8 @@ export default async function Page() {
       </div>
       <LoginForm />
       <div className="mt-4 text-center text-sm">
-        Don&apos;t have an account?{" "}
-        <Link href="#" className="underline">
-          Sign up
-        </Link>
+        Don&apos;t have an account? Visit our library. User can only be
+        registered by our library staff.
       </div>
     </>
   );
