@@ -77,7 +77,7 @@ export default async function Page({
         ]}
         resourceAction={loanList}
         resourceEditPath={
-          session?.user.role !== "user" ? "/loans/{id}/finalize" : undefined
+          session?.user.role !== "user" ? "/loans/{id}/return" : undefined
         }
       />
     </div>
